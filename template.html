@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Der Spuk von Herings Gaststätte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Alegreya+Sans:wght@500;800&display=swap" rel="stylesheet">
+<style>
+/*
+VOICE: gemütlich-gruseliger Familienkrimi, warm, zum Vorlesen am Adventsabend
+IDEA: die Fassade von Herings Gaststätte bei Nacht, jedes Fenster ein Türchen; jedes Kapitel ist eine Ermittlungsakte
+PICTURE: SVG-Hausfassade mit Schild, verschneitem Dach, Kellerbrunnen-Licht; auf Kapitelseiten der Giebel mit großer Türchen-Nummer
+COLOUR and TYPE: Tannennacht #10201c als Grund in beiden Themen, Lampengold #f0c45a, Puderzuckerweiß, Stempelrot #d2453a; Fraktur nur fürs Schild, Literata zum Lesen, Alegreya Sans für Etiketten
+LAYOUT: Start = Fassade + 6×4-Fenstergitter; Kapitel = Giebel-Kopf, eine ruhige Lesespalte, Ermittlerfrage als roter Aktenstempel, Navigation unten
+*/
+:root{color-scheme:dark;--bg:#10201c;--bg2:#17302a;--ink:#f3eee2;--soft:#bfc9bf;--gold:#f0c45a;--red:#d2453a;--line:#2b4a42;--fs:18px}
+:root[data-theme=light],:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:20px}
+body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs)/1.7 Literata,Georgia,serif;overflow-x:clip;-webkit-text-size-adjust:100%}
+a{color:var(--gold)}
+button{font:inherit}
+.band{padding:clamp(20px,4vw,48px) max(5vw,16px)}
+.wrap{max-width:720px;margin:0 auto}
+.sign{font-family:UnifrakturMaguntia,serif}
+.lbl{font-family:"Alegreya Sans",system-ui,sans-serif;font-weight:800;letter-spacing:.02em}
+#snow{position:fixed;inset:0;pointer-events:none;z-index:0}
+main{position:relative;z-index:1}
+/* Start */
+.hero{text-align:center;padding-bottom:0}
+.hero h1{font:400 clamp(38px,8vw,64px)/1.05 UnifrakturMaguntia,serif;margin:0 0 6px;color:var(--gold);text-wrap:balance}
+.hero p{margin:0 auto;max-width:34em;color:var(--soft);font-size:17px}
+.house{display:block;width:100%;max-width:640px;height:auto;margin:18px auto 0}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:640px;margin:0 auto}
+@media(min-width:620px){.grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.win{position:relative;aspect-ratio:3/4;border-radius:10px 10px 4px 4px;border:2px solid #5a3b25;background:#2a1d14;display:flex;align-items:center;justify-content:center;text-decoration:none;color:#3b2a1d;font:800 clamp(22px,5vw,30px)/1 "Alegreya Sans",sans-serif;box-shadow:inset 0 0 0 4px #1e140d;overflow:hidden;min-height:44px}
+.win::before,.win::after{content:"";position:absolute;background:#5a3b25}
+.win::before{left:50%;top:0;bottom:0;width:3px;transform:translateX(-50%)}
+.win::after{top:46%;left:0;right:0;height:3px}
+.win span{position:relative;z-index:1;background:var(--bg);border-radius:50%;width:1.7em;height:1.7em;display:flex;align-items:center;justify-content:center;color:var(--soft)}
+.win.open{background:radial-gradient(circle at 50% 40%,#ffe6a0,#f0c45a 55%,#c98a2c);border-color:#7a4f2c}
+.win.open span{background:#fff6dc;color:#5a3b25}
+.win.seen span::after{content:"✓";position:absolute;right:-6px;bottom:-6px;font-size:13px;background:var(--red);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center}
+.win.today{outline:3px solid var(--red);outline-offset:3px}
+.win:focus-visible,.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.foot{text-align:center;color:var(--soft);font-size:14px;padding-top:28px}
+/* Kapitel */
+.gable{text-align:center;padding-bottom:8px}
+.gable svg{width:min(420px,100%);height:auto;display:block;margin:0 auto}
+.kicker{color:var(--gold);font-size:15px;margin:10px 0 2px}
+.chap h2{font:600 clamp(30px,6vw,44px)/1.1 Literata,serif;margin:0 0 4px;text-wrap:balance}
+.meta{color:var(--soft);font-size:14px}
+.text p{margin:0 0 1em;hyphens:auto}
+.text p:first-of-type::first-letter{font:400 3.4em/0.8 UnifrakturMaguntia,serif;float:left;padding:.08em .08em 0 0;color:var(--gold)}
+.verse{border-left:3px solid var(--gold);padding:.3em 0 .3em 1em;font-style:italic;white-space:pre-line;margin:0 0 1em}
+.q{position:relative;margin:2em 0 1em;padding:22px 20px 18px;border:2px dashed var(--red);border-radius:6px;background:rgba(210,69,58,.08)}
+.q b{position:absolute;top:-.85em;left:14px;background:var(--bg);padding:0 8px;color:var(--red);font-size:15px}
+.q p{margin:0}
+.nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin-top:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:999px;border:2px solid var(--line);background:var(--bg2);color:var(--ink);text-decoration:none;cursor:pointer;font:800 16px/1 "Alegreya Sans",sans-serif}
+.btn.gold{background:var(--gold);color:#2a1d14;border-color:var(--gold)}
+.tools{display:flex;gap:8px;justify-content:center;margin-top:12px}
+.tools .btn{min-height:44px;padding:0 14px;font-size:15px}
+/* gesperrt */
+.lock{text-align:center;padding-top:10px}
+.lock .big{font:400 clamp(44px,10vw,72px)/1 UnifrakturMaguntia,serif;color:var(--gold);margin:8px 0}
+.lock p{color:var(--soft);max-width:28em;margin:0 auto 1em}
+@media(max-width:600px){:root{--fs:17px}}
+@media(prefers-reduced-motion:reduce){#snow{display:none}}
+</style>
+</head>
+<body>
+<canvas id="snow" aria-hidden="true"></canvas>
+<main id="app"></main>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="haus" viewBox="0 0 640 300">
+<rect x="0" y="282" width="640" height="18" fill="#e9eef0"/>
+<path d="M70 120 L320 22 L570 120 Z" fill="#3a2a22"/>
+<path d="M70 120 L320 22 L570 120 L560 128 L320 34 L80 128 Z" fill="#f3f6f7"/>
+<rect x="88" y="120" width="464" height="166" fill="#c9b79c"/>
+<rect x="88" y="120" width="464" height="14" fill="#a8977d"/>
+<rect x="160" y="138" width="320" height="38" rx="4" fill="#24170f"/>
+<text x="320" y="166" text-anchor="middle" font-family="UnifrakturMaguntia,serif" font-size="26" fill="#f0c45a">Herings Gaststätte</text>
+<g fill="#ffd77a"><rect x="116" y="190" width="56" height="62" rx="3"/><rect x="468" y="190" width="56" height="62" rx="3"/><rect x="296" y="70" width="48" height="40" rx="3"/></g>
+<g fill="#5b6b66"><rect x="196" y="190" width="56" height="62" rx="3"/><rect x="388" y="190" width="56" height="62" rx="3"/></g>
+<g stroke="#6b4a2e" stroke-width="4"><path d="M144 190v62M116 221h56M496 190v62M468 221h56M224 190v62M196 221h56M416 190v62M388 221h56M320 70v40M296 90h48"/></g>
+<rect x="290" y="196" width="60" height="90" rx="28" fill="#3b2a1d"/>
+<circle cx="338" cy="244" r="3" fill="#f0c45a"/>
+<path d="M300 112 q20-26 40 0" fill="none" stroke="#ffd77a" stroke-width="3" opacity=".0"/>
+<ellipse cx="140" cy="284" rx="40" ry="4" fill="#f0c45a" opacity=".25"/>
+<g transform="translate(548 262)"><ellipse cx="0" cy="14" rx="20" ry="13" fill="#2d2520"/><circle cx="-14" cy="2" r="9" fill="#2d2520"/><path d="M-21-4 l3-9 4 7zM-11-5 l3-8 3 8z" fill="#2d2520"/><circle cx="-17" cy="1" r="1.6" fill="#a8e07a"/><circle cx="-11" cy="1" r="1.6" fill="#a8e07a"/><path d="M18 18 q14-4 8-20" stroke="#2d2520" stroke-width="5" fill="none" stroke-linecap="round"/></g>
+<g transform="translate(588 270)"><ellipse cx="0" cy="8" rx="11" ry="8" fill="#8a6a4a"/><circle cx="-9" cy="0" r="6" fill="#8a6a4a"/><path d="M-14-4 l2-7 3 5zM-7-5 l2-6 2 6z" fill="#8a6a4a"/><path d="M10 10 q12-2 10-16" stroke="#8a6a4a" stroke-width="3.5" fill="none" stroke-linecap="round"/></g>
+</symbol>
+</defs>
+</svg>
+<script>
+{
+const K = __DATA__;
+const YEAR = 2026;
+const app = document.getElementById('app');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+let seen = store.get('hg-seen', []);
+let cheat = store.get('hg-cheat', []);
+let fs = store.get('hg-fs', 0);
+const applyFs = () => document.documentElement.style.setProperty('--fs', (17 + fs * 2) + 'px');
+applyFs();
+
+function dayToday(){
+  const d = new Date();
+  if (d.getFullYear() > YEAR) return 99;
+  if (d.getFullYear() < YEAR || d.getMonth() < 11) return 0;
+  return d.getDate();
+}
+const isOpen = n => n <= dayToday() || cheat.includes(n);
+const fmtWords = c => Math.max(3, Math.round(c.p.join(' ').split(/\s+/).length / 170));
+
+function gableSvg(n){
+  return `<svg viewBox="0 0 420 170" role="img" aria-label="Türchen ${n}">
+    <path d="M20 120 L210 14 L400 120 Z" fill="#3a2a22"/>
+    <path d="M20 120 L210 14 L400 120 L390 128 L210 26 L30 128 Z" fill="#f3f6f7"/>
+    <rect x="40" y="120" width="340" height="50" fill="#c9b79c"/>
+    <rect x="150" y="56" width="120" height="70" rx="6" fill="#ffd77a"/>
+    <rect x="150" y="56" width="120" height="70" rx="6" fill="none" stroke="#6b4a2e" stroke-width="6"/>
+    <text x="210" y="110" text-anchor="middle" font-family="Alegreya Sans,sans-serif" font-weight="800" font-size="54" fill="#5a3b25">${n}</text>
+    <rect x="60" y="134" width="300" height="30" rx="3" fill="#24170f"/>
+    <text x="210" y="155" text-anchor="middle" font-family="UnifrakturMaguntia,serif" font-size="19" fill="#f0c45a">Herings Gaststätte</text>
+  </svg>`;
+}
+
+function renderHome(){
+  document.getElementById('snow').style.opacity = 1;
+  const t = dayToday();
+  app.innerHTML = `
+  <section class="band hero">
+    <h1>Der Spuk von Herings Gaststätte</h1>
+    <p>Ein Weihnachtskrimi in 24 Türchen. Für Susanne, Uwe, Oma Rosita, Bonnie und Rocky.</p>
+    <svg class="house" viewBox="0 0 640 300" role="img" aria-label="Herings Gaststätte bei Nacht im Schnee"><use href="#haus"/></svg>
+  </section>
+  <section class="band" style="padding-top:12px">
+    <div class="grid">${K.map(c => {
+      const o = isOpen(c.n), s = seen.includes(c.n);
+      return `<a class="win${o ? ' open' : ''}${s ? ' seen' : ''}${c.n === t ? ' today' : ''}" href="#tuer-${c.n}" aria-label="Türchen ${c.n}${o ? '' : ', noch geschlossen'}"><span>${c.n}</span></a>`;
+    }).join('')}</div>
+    <p class="foot">Jeden Tag ein Kapitel, etwa fünf Minuten zum Lesen. Am Ende jedes Kapitels wartet eine Ermittlerfrage.</p>
+  </section>`;
+}
+
+function renderLocked(c){
+  document.getElementById('snow').style.opacity = 1;
+  const t = dayToday();
+  const days = t === 0 ? null : c.n - t;
+  app.innerHTML = `
+  <section class="band gable">${gableSvg(c.n)}</section>
+  <section class="band lock"><div class="wrap">
+    <div class="big">Halt!</div>
+    <p>Dieses Türchen öffnet sich erst am ${c.n}. Dezember${days ? `, also in ${days} ${days === 1 ? 'Tag' : 'Tagen'}` : ''}. Opa Ulli hätte gesagt: Ein guter Ermittler hat Geduld.</p>
+    <div class="nav" style="justify-content:center">
+      <a class="btn" href="#start">Zum Kalender</a>
+      <button class="btn" id="cheat" type="button">Ich schummle trotzdem</button>
+    </div>
+  </div></section>`;
+  document.getElementById('cheat').addEventListener('click', () => {
+    if (!cheat.includes(c.n)) cheat.push(c.n);
+    store.set('hg-cheat', cheat);
+    renderChapter(c);
+  });
+}
+
+function renderChapter(c){
+  document.getElementById('snow').style.opacity = .25;
+  if (!seen.includes(c.n)){ seen.push(c.n); store.set('hg-seen', seen); }
+  const paras = c.p.map(p => p.includes('\n')
+    ? `<p class="verse">${esc(p)}</p>`
+    : `<p>${esc(p)}</p>`).join('');
+  const prev = c.n > 1 ? `<a class="btn" href="#tuer-${c.n - 1}">‹ Türchen ${c.n - 1}</a>` : `<a class="btn" href="#start">Zum Kalender</a>`;
+  const next = c.n < 24 ? (isOpen(c.n + 1) ? `<a class="btn gold" href="#tuer-${c.n + 1}">Türchen ${c.n + 1} ›</a>` : `<a class="btn" href="#start">Zum Kalender</a>`) : `<a class="btn gold" href="#start">Frohe Weihnachten</a>`;
+  app.innerHTML = `
+  <section class="band gable">${gableSvg(c.n)}</section>
+  <article class="band chap" style="padding-top:8px"><div class="wrap">
+    <p class="kicker lbl">Türchen ${c.n} · ${c.n}. Dezember</p>
+    <h2>${esc(c.t)}</h2>
+    <p class="meta">Etwa ${fmtWords(c)} Minuten Lesezeit</p>
+    <div class="tools"><button class="btn" id="fsm" type="button" aria-label="Schrift kleiner">A−</button><button class="btn" id="fsp" type="button" aria-label="Schrift größer">A+</button></div>
+    <div class="text" style="margin-top:22px">${paras}</div>
+    <div class="q"><b class="lbl">Ermittlerfrage</b><p>${esc(c.q)}</p></div>
+    <nav class="nav">${prev}${next}</nav>
+  </div></article>`;
+  document.getElementById('fsp').addEventListener('click', () => { fs = Math.min(4, fs + 1); store.set('hg-fs', fs); applyFs(); });
+  document.getElementById('fsm').addEventListener('click', () => { fs = Math.max(0, fs - 1); store.set('hg-fs', fs); applyFs(); });
+}
+
+function route(){
+  const m = /^#tuer-(\d{1,2})$/.exec(location.hash);
+  const c = m && K.find(x => x.n === +m[1]);
+  if (c){ isOpen(c.n) ? renderChapter(c) : renderLocked(c); }
+  else renderHome();
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', route);
+route();
+
+/* Puderzucker-Schnee */
+const cv = document.getElementById('snow'), cx = cv.getContext('2d');
+let W = 0, H = 0, flakes = [];
+const size = () => { W = cv.width = innerWidth; H = cv.height = innerHeight; flakes = Array.from({length: Math.round(W / 14)}, () => ({x: Math.random() * W, y: Math.random() * H, r: Math.random() * 2 + .6, s: Math.random() * .5 + .2})); };
+const ro = new ResizeObserver(size); ro.observe(document.body);
+size();
+const tick = () => {
+  cx.clearRect(0, 0, W, H); cx.fillStyle = 'rgba(255,255,255,.55)';
+  for (const f of flakes){ f.y += f.s; f.x += Math.sin(f.y / 40) * .2; if (f.y > H) { f.y = -4; f.x = Math.random() * W; } cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, 7); cx.fill(); }
+  requestAnimationFrame(tick);
+};
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) tick();
+}
+</script>
+</body>
+</html>
