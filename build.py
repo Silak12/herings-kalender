@@ -3,7 +3,7 @@
 Format je Kapitel:  ## <Nummer> | <Titel>, Absätze durch Leerzeilen getrennt,
 letzter Absatz beginnt mit **Ermittlerfrage:**
 """
-import glob, json, re, pathlib
+import base64, glob, json, re, pathlib
 
 root = pathlib.Path(__file__).parent
 chapters = []
@@ -17,7 +17,7 @@ for f in sorted(glob.glob(str(root / "kapitel" / "*.md"))):
         chapters.append({"n": int(n), "t": title, "p": paras,
                          "q": q.replace("**Ermittlerfrage:**", "").strip()})
 assert [c["n"] for c in chapters] == list(range(1, 25)), "Es müssen genau die Kapitel 1–24 sein"
-data = json.dumps(chapters, ensure_ascii=False).replace("</", "<\\/")
+data = base64.b64encode(json.dumps(chapters, ensure_ascii=False).encode("utf-8")).decode("ascii")
 html = (root / "template.html").read_text(encoding="utf-8").replace("__DATA__", data)
 (root / "index.html").write_text(html, encoding="utf-8")
 for c in chapters:

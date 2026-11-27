@@ -13,4 +13,4 @@ Ein Weihnachtskrimi-Adventskalender in 24 Türchen.
 - `build.py` – erzeugt `index.html` aus Texten und Vorlage: `python3 build.py`
 - `index.html` – die veröffentlichte Seite
 
-Jedes Türchen öffnet sich ab seinem Datum im Dezember 2026; davor gibt es den Knopf „Ich schummle trotzdem“.
+Jedes Türchen öffnet sich ab seinem Datum im Dezember 2026. Frühere Türchen bleiben offen, spätere sind gesperrt. Die Texte sind in der Seite kodiert, damit man sie nicht versehentlich im Quelltext liest.

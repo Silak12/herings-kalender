@@ -98,7 +98,7 @@ main{position:relative;z-index:1}
 </svg>
 <script>
 {
-const K = __DATA__;
+const K = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob('__DATA__'), ch => ch.charCodeAt(0))));
 const YEAR = 2026;
 const app = document.getElementById('app');
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -107,7 +107,6 @@ const store = {
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 };
 let seen = store.get('hg-seen', []);
-let cheat = store.get('hg-cheat', []);
 let fs = store.get('hg-fs', 0);
 const applyFs = () => document.documentElement.style.setProperty('--fs', (17 + fs * 2) + 'px');
 applyFs();
@@ -118,7 +117,7 @@ function dayToday(){
   if (d.getFullYear() < YEAR || d.getMonth() < 11) return 0;
   return d.getDate();
 }
-const isOpen = n => n <= dayToday() || cheat.includes(n);
+const isOpen = n => n <= dayToday();
 const fmtWords = c => Math.max(3, Math.round(c.p.join(' ').split(/\s+/).length / 170));
 
 function gableSvg(n){
@@ -163,14 +162,8 @@ function renderLocked(c){
     <p>Dieses Türchen öffnet sich erst am ${c.n}. Dezember${days ? `, also in ${days} ${days === 1 ? 'Tag' : 'Tagen'}` : ''}. Opa Ulli hätte gesagt: Ein guter Ermittler hat Geduld.</p>
     <div class="nav" style="justify-content:center">
       <a class="btn" href="#start">Zum Kalender</a>
-      <button class="btn" id="cheat" type="button">Ich schummle trotzdem</button>
     </div>
   </div></section>`;
-  document.getElementById('cheat').addEventListener('click', () => {
-    if (!cheat.includes(c.n)) cheat.push(c.n);
-    store.set('hg-cheat', cheat);
-    renderChapter(c);
-  });
 }
 
 function renderChapter(c){
